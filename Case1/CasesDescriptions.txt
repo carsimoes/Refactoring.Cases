@@ -1,0 +1,3 @@
+﻿Case 1:
+
+- Method extraction
