@@ -38,7 +38,9 @@ namespace Refactoring.Cases.Case1
 
                 #endregion
 
-                var thisAmount = AmountFor(perf);
+                #region 5 - Inline variable
+                //var thisAmount = AmountFor(perf);
+                #endregion
 
                 #region 1 - Extract function
                 //switch (play.PlayDetails.Type)
@@ -66,13 +68,19 @@ namespace Refactoring.Cases.Case1
                 //return thisAmount;
                 #endregion
 
-                volumeCredits += Math.Max(perf.Audience - 30, 0);
+                #region 6 - Extract function
 
-                if ("Comedy" == Playfor(perf).PlayDetails.Type)
-                    volumeCredits += perf.Audience / 5;
+                //volumeCredits += Math.Max(perf.Audience - 30, 0);
 
-                result += $"{Playfor(perf).PlayDetails.Name}: {thisAmount / 100} ({perf.Audience} seats)";
-                totalAmount += thisAmount;
+                //if ("Comedy" == Playfor(perf).PlayDetails.Type)
+                //    volumeCredits += perf.Audience / 5;
+
+                #endregion
+
+                volumeCredits = VolumeCreditsFor(perf);
+
+                result += $"{Playfor(perf).PlayDetails.Name}: {AmountFor(perf) / 100} ({perf.Audience} seats)";
+                totalAmount += AmountFor(perf);
             }
 
             result += $"Amount owed is {totalAmount / 100}";
@@ -117,6 +125,18 @@ namespace Refactoring.Cases.Case1
         private Play Playfor(Performance performance)
         {
             return Plays.Where(x => x.PlayID == performance.PlayID).FirstOrDefault();
+        }
+
+        private int VolumeCreditsFor(Performance perf)
+        {
+            var volumeCredits = 0;
+
+            volumeCredits += Math.Max(perf.Audience - 30, 0);
+
+            if ("Comedy" == Playfor(perf).PlayDetails.Type)
+                volumeCredits += perf.Audience / 5;
+        
+            return volumeCredits;
         }
 
         private void CreateData()
