@@ -26,31 +26,35 @@ namespace Refactoring.Cases.Case1
 
             foreach (var perf in Invoices[0].Performances)
             {
-                var play = Plays.Where(x=>x.PlayID == perf.PlayID).FirstOrDefault(); 
-                var thisAmount = 0;
+                var play = Plays.Where(x => x.PlayID == perf.PlayID).FirstOrDefault();
 
-                switch (play.PlayDetails.Type)
-                {
-                    case "Tragedy":
-                        thisAmount = 40000;
-                        if (perf.Audience > 30)
-                        {
-                            thisAmount += 1000 * (perf.Audience - 30);
-                        }
-                        break;
+                var thisAmount = AmountFor(perf, play);
 
-                    case "Comedy":
-                        thisAmount = 30000;
-                        if (perf.Audience > 20)
-                        {
-                            thisAmount += 10000 + 500 * (perf.Audience - 20);
-                        }
-                        thisAmount += 3000 * perf.Audience;
-                        break;
+                #region 1 - Extract function
+                //switch (play.PlayDetails.Type)
+                //{
+                //    case "Tragedy":
+                //        thisAmount = 40000;
+                //        if (performance.Audience > 30)
+                //        {
+                //            thisAmount += 1000 * (performance.Audience - 30);
+                //        }
+                //        break;
 
-                    default:
-                        throw new Exception($"Unknown type:{play.PlayDetails.Type}");
-                }
+                //    case "Comedy":
+                //        thisAmount = 30000;
+                //        if (performance.Audience > 20)
+                //        {
+                //            thisAmount += 10000 + 500 * (performance.Audience - 20);
+                //        }
+                //        thisAmount += 3000 * performance.Audience;
+                //        break;
+
+                //    default:
+                //        throw new Exception($"Unknown type:{play.PlayDetails.Type}");
+                //}
+                //return thisAmount;
+                #endregion
 
                 volumeCredits += Math.Max(perf.Audience - 30, 0);
 
@@ -65,6 +69,39 @@ namespace Refactoring.Cases.Case1
             result += $"You earned {volumeCredits} credits";
 
             Result = result;
+        }
+
+        private int AmountFor(Performance performance, Play play)
+        {
+            #region 2 - Rename variables
+             //var thisAmount = 0;
+            #endregion
+
+            var result = 0;
+
+            switch (play.PlayDetails.Type)
+            {
+                case "Tragedy":
+                    result = 40000;
+                    if (performance.Audience > 30)
+                    {
+                        result += 1000 * (performance.Audience - 30);
+                    }
+                    break;
+
+                case "Comedy":
+                    result = 30000;
+                    if (performance.Audience > 20)
+                    {
+                        result += 10000 + 500 * (performance.Audience - 20);
+                    }
+                    result += 3000 * performance.Audience;
+                    break;
+
+                default:
+                    throw new Exception($"Unknown type:{play.PlayDetails.Type}");
+            }
+            return result;
         }
 
         private void CreateData()
