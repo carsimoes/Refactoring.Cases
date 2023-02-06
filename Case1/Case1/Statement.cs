@@ -22,7 +22,12 @@ namespace Refactoring.Cases.Case1
             var totalAmount = 0;
             var volumeCredits = 0;
             var result = $"Statment for {Invoices[0].Custumer}";
-            var format = 0.0;
+
+            #region 7 - Extract temp variable to function
+            
+            //var format = 0.0;
+            
+            #endregion
 
             foreach (var perf in Invoices[0].Performances)
             {
@@ -79,14 +84,20 @@ namespace Refactoring.Cases.Case1
 
                 volumeCredits = VolumeCreditsFor(perf);
 
-                result += $"{Playfor(perf).PlayDetails.Name}: {AmountFor(perf) / 100} ({perf.Audience} seats)";
+                result += $"{Playfor(perf).PlayDetails.Name} : {Usd(AmountFor(perf)/100)} ({perf.Audience} seats)";
                 totalAmount += AmountFor(perf);
             }
 
-            result += $"Amount owed is {totalAmount / 100}";
+            result += $"Amount owed is {Usd(totalAmount/100)}";
             result += $"You earned {volumeCredits} credits";
 
             Result = result;
+        }
+
+        private decimal Usd(decimal number)
+        {
+            //TODO: Number format
+            return number;
         }
 
         private int AmountFor(Performance performance)
@@ -127,14 +138,14 @@ namespace Refactoring.Cases.Case1
             return Plays.Where(x => x.PlayID == performance.PlayID).FirstOrDefault();
         }
 
-        private int VolumeCreditsFor(Performance perf)
+        private int VolumeCreditsFor(Performance performance)
         {
             var volumeCredits = 0;
 
-            volumeCredits += Math.Max(perf.Audience - 30, 0);
+            volumeCredits += Math.Max(performance.Audience - 30, 0);
 
-            if ("Comedy" == Playfor(perf).PlayDetails.Type)
-                volumeCredits += perf.Audience / 5;
+            if ("Comedy" == Playfor(performance).PlayDetails.Type)
+                volumeCredits += performance.Audience / 5;
         
             return volumeCredits;
         }
