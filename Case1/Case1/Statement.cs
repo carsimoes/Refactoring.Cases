@@ -26,9 +26,19 @@ namespace Refactoring.Cases.Case1
 
             foreach (var perf in Invoices[0].Performances)
             {
-                var play = Plays.Where(x => x.PlayID == perf.PlayID).FirstOrDefault();
+                #region 3 - Replace Temp with query
 
-                var thisAmount = AmountFor(perf, play);
+                //var play = Plays.Where(x => x.PlayID == perf.PlayID).FirstOrDefault();
+
+                #endregion
+
+                #region 4 -  Inline Variable
+
+                //var play = Playfor(perf);
+
+                #endregion
+
+                var thisAmount = AmountFor(perf);
 
                 #region 1 - Extract function
                 //switch (play.PlayDetails.Type)
@@ -58,10 +68,10 @@ namespace Refactoring.Cases.Case1
 
                 volumeCredits += Math.Max(perf.Audience - 30, 0);
 
-                if ("Comedy" == play.PlayDetails.Type)
+                if ("Comedy" == Playfor(perf).PlayDetails.Type)
                     volumeCredits += perf.Audience / 5;
 
-                result += $"{play.PlayDetails.Name}: {thisAmount / 100} ({perf.Audience} seats)";
+                result += $"{Playfor(perf).PlayDetails.Name}: {thisAmount / 100} ({perf.Audience} seats)";
                 totalAmount += thisAmount;
             }
 
@@ -71,7 +81,7 @@ namespace Refactoring.Cases.Case1
             Result = result;
         }
 
-        private int AmountFor(Performance performance, Play play)
+        private int AmountFor(Performance performance)
         {
             #region 2 - Rename variables
              //var thisAmount = 0;
@@ -79,7 +89,7 @@ namespace Refactoring.Cases.Case1
 
             var result = 0;
 
-            switch (play.PlayDetails.Type)
+            switch (Playfor(performance).PlayDetails.Type)
             {
                 case "Tragedy":
                     result = 40000;
@@ -99,9 +109,14 @@ namespace Refactoring.Cases.Case1
                     break;
 
                 default:
-                    throw new Exception($"Unknown type:{play.PlayDetails.Type}");
+                    throw new Exception($"Unknown type:{Playfor(performance).PlayDetails.Type}");
             }
             return result;
+        }
+
+        private Play Playfor(Performance performance)
+        {
+            return Plays.Where(x => x.PlayID == performance.PlayID).FirstOrDefault();
         }
 
         private void CreateData()
