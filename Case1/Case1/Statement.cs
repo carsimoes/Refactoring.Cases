@@ -20,7 +20,13 @@ namespace Refactoring.Cases.Case1
             CreateData();
 
             var totalAmount = 0;
-            var volumeCredits = 0;
+
+            #region 8 - Extracting variable
+            
+            //var volumeCredits = 0;
+            
+            #endregion
+
             var result = $"Statment for {Invoices[0].Custumer}";
 
             #region 7 - Extract temp variable to function
@@ -82,16 +88,33 @@ namespace Refactoring.Cases.Case1
 
                 #endregion
 
-                volumeCredits = VolumeCreditsFor(perf);
+                #region 8 - Extracting variable
+                
+                //volumeCredits = VolumeCreditsFor(perf);
+                
+                #endregion
 
                 result += $"{Playfor(perf).PlayDetails.Name} : {Usd(AmountFor(perf)/100)} ({perf.Audience} seats)";
                 totalAmount += AmountFor(perf);
             }
 
+            var volumeCredits = TotalVolumeCredits(Invoices[0].Performances);
+
             result += $"Amount owed is {Usd(totalAmount/100)}";
             result += $"You earned {volumeCredits} credits";
 
             Result = result;
+        }
+
+        private decimal TotalVolumeCredits(List<Performance> performances)
+        {
+            var volumeCredits = 0;
+            foreach (var perfeormance in performances)
+            {
+                volumeCredits = VolumeCreditsFor(perfeormance);
+            }
+
+            return volumeCredits;
         }
 
         private decimal Usd(decimal number)
