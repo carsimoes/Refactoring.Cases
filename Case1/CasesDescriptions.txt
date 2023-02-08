@@ -1,3 +1,6 @@
 ﻿Case 1:
 
-- Method extraction
+- Method extractions
+- Inline Variables
+- Extracting variables
+- Extract temporary variables to functions
