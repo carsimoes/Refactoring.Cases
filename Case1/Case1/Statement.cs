@@ -98,10 +98,14 @@ namespace Refactoring.Cases.Case1
                 totalAmount += AmountFor(perf);
             }
 
-            var volumeCredits = TotalVolumeCredits(Invoices[0].Performances);
+            #region 8 - Extracting variable
+
+            //var volumeCredits = TotalVolumeCredits(Invoices[0].Performances);
+
+            #endregion
 
             result += $"Amount owed is {Usd(totalAmount/100)}";
-            result += $"You earned {volumeCredits} credits";
+            result += $"You earned {TotalVolumeCredits(Invoices[0].Performances)} credits";
 
             Result = result;
         }
