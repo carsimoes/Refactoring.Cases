@@ -19,15 +19,19 @@ namespace Refactoring.Cases.Case1
         {
             CreateData();
 
-            var totalAmount = 0;
+            #region Extracting variable
 
-            #region 8 - Extracting variable
-            
-            //var volumeCredits = 0;
-            
+            // totalAmount = 0;
+
             #endregion
 
-            var result = $"Statment for {Invoices[0].Custumer}";
+            #region 8 - Extracting variable
+
+            //var volumeCredits = 0;
+
+            #endregion
+
+            string result = $"Statment for {Invoices[0].Custumer}";
 
             #region 7 - Extract temp variable to function
             
@@ -95,7 +99,12 @@ namespace Refactoring.Cases.Case1
                 #endregion
 
                 result += $"{Playfor(perf).PlayDetails.Name} : {Usd(AmountFor(perf)/100)} ({perf.Audience} seats)";
-                totalAmount += AmountFor(perf);
+
+                #region Extracting totalamount
+
+                //totalAmount += AmountFor(perf);
+
+                #endregion
             }
 
             #region 8 - Extracting variable
@@ -104,10 +113,27 @@ namespace Refactoring.Cases.Case1
 
             #endregion
 
-            result += $"Amount owed is {Usd(totalAmount/100)}";
+            #region Extracting function
+
+            //var totalAmount = TotalAmount();
+
+            #endregion
+
+            result += $"Amount owed is {Usd(TotalAmount() / 100)}";
             result += $"You earned {TotalVolumeCredits(Invoices[0].Performances)} credits";
 
             Result = result;
+        }
+
+        private int TotalAmount()
+        {
+            var totalAmount = 0;
+            foreach (var perf in Invoices[0].Performances)
+            {
+                totalAmount += AmountFor(perf);
+            }
+
+            return totalAmount;
         }
 
         private decimal TotalVolumeCredits(List<Performance> performances)
@@ -162,7 +188,7 @@ namespace Refactoring.Cases.Case1
 
         private Play Playfor(Performance performance)
         {
-            return Plays.Where(x => x.PlayID == performance.PlayID).FirstOrDefault();
+            return Plays.FirstOrDefault(x => x.PlayID == performance.PlayID);
         }
 
         private int VolumeCreditsFor(Performance performance)
