@@ -16,3 +16,4 @@ Useful code refactoring techniques:
 - Slide Statements: to lift the initialization code. It can help to know what is happening in the code and gain new insights.
 - Extract Functions: moves a piece of code from an existing method to a new method with a name that explains what it is doing. This technique can be used to reduce complexity and improve code readability.
 - Inline variables: to completely remove a variable. Allows you to replace all occurrences of a variable in code with its initializer.
+- Split Phases - Separate logic in parts

@@ -19,6 +19,11 @@ namespace Refactoring.Cases.Case1
         {
             CreateData();
 
+            RenderPlainText();
+        }
+
+        private string RenderPlainText()
+        {
             #region Extracting variable
 
             // totalAmount = 0;
@@ -34,9 +39,9 @@ namespace Refactoring.Cases.Case1
             string result = $"Statment for {Invoices[0].Custumer}";
 
             #region 7 - Extract temp variable to function
-            
+
             //var format = 0.0;
-            
+
             #endregion
 
             foreach (var perf in Invoices[0].Performances)
@@ -93,12 +98,12 @@ namespace Refactoring.Cases.Case1
                 #endregion
 
                 #region 8 - Extracting variable
-                
+
                 //volumeCredits = VolumeCreditsFor(perf);
-                
+
                 #endregion
 
-                result += $"{Playfor(perf).PlayDetails.Name} : {Usd(AmountFor(perf)/100)} ({perf.Audience} seats)";
+                result += $"{Playfor(perf).PlayDetails.Name} : {Usd(AmountFor(perf) / 100)} ({perf.Audience} seats)";
 
                 #region Extracting totalamount
 
@@ -123,6 +128,8 @@ namespace Refactoring.Cases.Case1
             result += $"You earned {TotalVolumeCredits(Invoices[0].Performances)} credits";
 
             Result = result;
+
+            return result;
         }
 
         private int TotalAmount()
