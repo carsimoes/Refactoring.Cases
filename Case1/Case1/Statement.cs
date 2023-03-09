@@ -11,18 +11,19 @@ namespace Refactoring.Cases.Case1
 {
     public class Statement
     {
-        public List<Invoice> Invoices;
-        public List<Play> Plays;
+        //public List<Invoice> Invoices;
+        //public List<Play> Plays;
         public string Result;
 
         public Statement()
         {
-            CreateData();
 
-            RenderPlainText();
+            var data = CreateData();
+
+            RenderPlainText(data);
         }
 
-        private string RenderPlainText()
+        private string RenderPlainText(Data data)
         {
             #region Extracting variable
 
@@ -36,7 +37,7 @@ namespace Refactoring.Cases.Case1
 
             #endregion
 
-            string result = $"Statment for {Invoices[0].Custumer}";
+            string result = $"Statment for {data.Invoices[0].Custumer}";
 
             #region 7 - Extract temp variable to function
 
@@ -44,7 +45,7 @@ namespace Refactoring.Cases.Case1
 
             #endregion
 
-            foreach (var perf in Invoices[0].Performances)
+            foreach (var perf in data.Invoices[0].Performances)
             {
                 #region 3 - Replace Temp with query
 
@@ -103,7 +104,7 @@ namespace Refactoring.Cases.Case1
 
                 #endregion
 
-                result += $"{Playfor(perf).PlayDetails.Name} : {Usd(AmountFor(perf) / 100)} ({perf.Audience} seats)";
+                result += $"{Playfor(perf, data).PlayDetails.Name} : {Usd(AmountFor(perf, data) / 100)} ({perf.Audience} seats)";
 
                 #region Extracting totalamount
 
@@ -124,31 +125,31 @@ namespace Refactoring.Cases.Case1
 
             #endregion
 
-            result += $"Amount owed is {Usd(TotalAmount() / 100)}";
-            result += $"You earned {TotalVolumeCredits(Invoices[0].Performances)} credits";
+            result += $"Amount owed is {Usd(TotalAmount(data) / 100)}";
+            result += $"You earned {TotalVolumeCredits(data.Invoices[0].Performances, data)} credits";
 
             Result = result;
 
             return result;
         }
 
-        private int TotalAmount()
+        private int TotalAmount(Data data)
         {
             var totalAmount = 0;
-            foreach (var perf in Invoices[0].Performances)
+            foreach (var perf in data.Invoices[0].Performances)
             {
-                totalAmount += AmountFor(perf);
+                totalAmount += AmountFor(perf, data);
             }
 
             return totalAmount;
         }
 
-        private decimal TotalVolumeCredits(List<Performance> performances)
+        private decimal TotalVolumeCredits(List<Performance> performances, Data data)
         {
             var volumeCredits = 0;
             foreach (var perfeormance in performances)
             {
-                volumeCredits = VolumeCreditsFor(perfeormance);
+                volumeCredits = VolumeCreditsFor(perfeormance, data);
             }
 
             return volumeCredits;
@@ -160,7 +161,7 @@ namespace Refactoring.Cases.Case1
             return number;
         }
 
-        private int AmountFor(Performance performance)
+        private int AmountFor(Performance performance, Data data)
         {
             #region 2 - Rename variables
              //var thisAmount = 0;
@@ -168,7 +169,7 @@ namespace Refactoring.Cases.Case1
 
             var result = 0;
 
-            switch (Playfor(performance).PlayDetails.Type)
+            switch (Playfor(performance, data).PlayDetails.Type)
             {
                 case "Tragedy":
                     result = 40000;
@@ -188,32 +189,32 @@ namespace Refactoring.Cases.Case1
                     break;
 
                 default:
-                    throw new Exception($"Unknown type:{Playfor(performance).PlayDetails.Type}");
+                    throw new Exception($"Unknown type:{Playfor(performance, data).PlayDetails.Type}");
             }
             return result;
         }
 
-        private Play Playfor(Performance performance)
+        private Play Playfor(Performance performance, Data data)
         {
-            return Plays.FirstOrDefault(x => x.PlayID == performance.PlayID);
+            return data.Plays.FirstOrDefault(x => x.PlayID == performance.PlayID);
         }
 
-        private int VolumeCreditsFor(Performance performance)
+        private int VolumeCreditsFor(Performance performance, Data data)
         {
             var volumeCredits = 0;
 
             volumeCredits += Math.Max(performance.Audience - 30, 0);
 
-            if ("Comedy" == Playfor(performance).PlayDetails.Type)
+            if ("Comedy" == Playfor(performance, data).PlayDetails.Type)
                 volumeCredits += performance.Audience / 5;
         
             return volumeCredits;
         }
 
-        private void CreateData()
+        private Data CreateData()
         {
-            Invoices = new List<Invoice>();
-            Plays = new List<Play>();
+            var invoices = new List<Invoice>();
+            var plays = new List<Play>();
 
             var performances = new List<Performance>();
             performances.Add(new Performance()
@@ -232,13 +233,13 @@ namespace Refactoring.Cases.Case1
                 Audience = 10
             });
 
-            Invoices.Add(new Invoice()
+            invoices.Add(new Invoice()
             {
                 Custumer = "BigCO",
                 Performances = performances
             });
 
-            Plays.Add(new Play()
+            plays.Add(new Play()
             {
                 PlayID = "hamlet",
                 PlayDetails = new PlayDetails()
@@ -247,7 +248,7 @@ namespace Refactoring.Cases.Case1
                     Type = "Tragedy"
                 }
             });
-            Plays.Add(new Play()
+            plays.Add(new Play()
             {
                 PlayID = "as-like",
                 PlayDetails = new PlayDetails()
@@ -256,7 +257,7 @@ namespace Refactoring.Cases.Case1
                     Type = "Comedy"
                 }
             });
-            Plays.Add(new Play()
+            plays.Add(new Play()
             {
                 PlayID = "othelo",
                 PlayDetails = new PlayDetails()
@@ -265,7 +266,21 @@ namespace Refactoring.Cases.Case1
                     Type = "Tragedy"
                 }
             });
+
+            var data = new Data()
+            {
+                Invoices = invoices,
+                Plays = plays
+            };
+
+            return data;
         }
+    }
+
+    public class Data
+    {
+        public List<Invoice> Invoices { get; set; }
+        public List<Play> Plays { get; set; }
     }
 
     public class Play
