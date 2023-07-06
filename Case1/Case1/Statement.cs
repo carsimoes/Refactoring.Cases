@@ -17,7 +17,6 @@ namespace Refactoring.Cases.Case1
 
         public Statement()
         {
-
             var data = CreateData();
 
             RenderPlainText(data);
@@ -37,14 +36,14 @@ namespace Refactoring.Cases.Case1
 
             #endregion
 
-            string result = $"Statment for {data.Invoices[0].Custumer}";
+            string result = $"Statement for {data.Invoices[0].Custumer}\n";
 
             #region 7 - Extract temp variable to function
 
             //var format = 0.0;
 
             #endregion
-
+            
             foreach (var perf in data.Invoices[0].Performances)
             {
                 #region 3 - Replace Temp with query
@@ -125,8 +124,8 @@ namespace Refactoring.Cases.Case1
 
             #endregion
 
-            result += $"Amount owed is {Usd(TotalAmount(data) / 100)}";
-            result += $"You earned {TotalVolumeCredits(data.Invoices[0].Performances, data)} credits";
+            result += $"Amount owed is {Usd(TotalAmount(data) / 100)}\n";
+            result += $"You earned {TotalVolumeCredits(data.Invoices[0].Performances, data)} credits\n";
 
             Result = result;
 
