@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Refactoring.Cases.Case1
+namespace Case1.Case1.V1
 {
     public class Statement
     {
@@ -19,7 +19,7 @@ namespace Refactoring.Cases.Case1
         {
             var data = CreateData();
 
-            RenderPlainText(data);
+             RenderPlainText(data);
         }
 
         private string RenderPlainText(Data data)
@@ -43,7 +43,7 @@ namespace Refactoring.Cases.Case1
             //var format = 0.0;
 
             #endregion
-            
+
             foreach (var perf in data.Invoices[0].Performances)
             {
                 #region 3 - Replace Temp with query
@@ -163,7 +163,7 @@ namespace Refactoring.Cases.Case1
         private int AmountFor(Performance performance, Data data)
         {
             #region 2 - Rename variables
-             //var thisAmount = 0;
+            //var thisAmount = 0;
             #endregion
 
             var result = 0;
@@ -206,7 +206,7 @@ namespace Refactoring.Cases.Case1
 
             if ("Comedy" == Playfor(performance, data).PlayDetails.Type)
                 volumeCredits += performance.Audience / 5;
-        
+
             return volumeCredits;
         }
 
