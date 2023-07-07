@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-
-namespace Case1.Case1.V2
+﻿namespace Case1.Case1.V2
 {
     public class Statement
     {
@@ -36,7 +27,7 @@ namespace Case1.Case1.V2
             return result;
         }
 
-        private int TotalAmount(Data data)
+        private static int TotalAmount(Data data)
         {
             var totalAmount = 0;
             foreach (var perf in data.Invoices[0].Performances)
@@ -47,7 +38,7 @@ namespace Case1.Case1.V2
             return totalAmount;
         }
 
-        private decimal TotalVolumeCredits(List<Performance> performances, Data data)
+        private static decimal TotalVolumeCredits(List<Performance> performances, Data data)
         {
             var volumeCredits = 0;
             foreach (var perfeormance in performances)
@@ -58,13 +49,13 @@ namespace Case1.Case1.V2
             return volumeCredits;
         }
 
-        private decimal Usd(decimal number)
+        private static decimal Usd(decimal number)
         {
             //TODO: Number format
             return number;
         }
 
-        private int AmountFor(Performance performance, Data data)
+        private static int AmountFor(Performance performance, Data data)
         {
             var result = 0;
 
@@ -93,12 +84,12 @@ namespace Case1.Case1.V2
             return result;
         }
 
-        private Play Playfor(Performance performance, Data data)
+        private static Play Playfor(Performance performance, Data data)
         {
             return data.Plays.FirstOrDefault(x => x.PlayID == performance.PlayID);
         }
 
-        private int VolumeCreditsFor(Performance performance, Data data)
+        private static int VolumeCreditsFor(Performance performance, Data data)
         {
             var volumeCredits = 0;
 
@@ -109,7 +100,5 @@ namespace Case1.Case1.V2
 
             return volumeCredits;
         }
-
-        
     }
 }
