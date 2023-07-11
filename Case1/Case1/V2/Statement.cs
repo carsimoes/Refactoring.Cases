@@ -57,7 +57,7 @@
 
         private static int AmountFor(Performance performance, Data data)
         {
-            var result = 0;
+            int result;
 
             switch (Playfor(performance, data).PlayDetails.Type)
             {

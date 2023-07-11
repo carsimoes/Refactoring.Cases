@@ -10,22 +10,24 @@
             var invoices = new List<Invoice>();
             var plays = new List<Play>();
 
-            var performances = new List<Performance>();
-            performances.Add(new Performance()
+            var performances = new List<Performance>
             {
-                PlayID = "hamlet",
-                Audience = 55
-            });
-            performances.Add(new Performance()
-            {
-                PlayID = "as-like",
-                Audience = 35
-            });
-            performances.Add(new Performance()
-            {
-                PlayID = "othelo",
-                Audience = 10
-            });
+                new Performance()
+                {
+                    PlayID = "hamlet",
+                    Audience = 55
+                },
+                new Performance()
+                {
+                    PlayID = "as-like",
+                    Audience = 35
+                },
+                new Performance()
+                {
+                    PlayID = "othelo",
+                    Audience = 10
+                }
+            };
 
             invoices.Add(new Invoice()
             {
